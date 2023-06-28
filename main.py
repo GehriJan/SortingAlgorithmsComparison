@@ -3,6 +3,7 @@
 # Press ⌃R to execute it or replace it with your code.
 # Press Double ⇧ to search everywhere for classes, files, tool windows, actions, and settings.
 import array as arr
+import math
 import time
 import numpy as np
 import matplotlib.pyplot as plt
@@ -11,7 +12,6 @@ import random
 
 # todo zeitmessung einfügen mit tabelle
 # todo zufällige arrays und überprüfung, ob Sortierung stimmt
-# todo Insertion Sort implementieren
 # todo QuickSort implementieren
 
 
@@ -79,6 +79,18 @@ def mergeSort(array):
                 mergedArray[i] = rArr[rCtr]
                 rCtr += 1
     return mergedArray
+
+
+# def quickSort(array):
+#    if(len(array)==1): return
+#    rInd = len(array)-2
+#    lInd = 0
+#    pivot = len(array)-1
+#    while(rInd!=lInd):
+#        while(array[rInd]<=array[pivot]): rInd-=1
+#        while(array[lInd]>array[pivot]): lInd+=1
+#        array[rInd], array[lInd] = array[lInd], array[rInd]
+#    quickSort(:)
 
 
 # VON VORLESUNG
@@ -180,6 +192,7 @@ def merge(left, right):
 
     return np.array(merged)
 
+
 # MESSUNGSFUNKTIONEN
 def measure(func):
     array2 = array1
@@ -189,14 +202,29 @@ def measure(func):
 
 
 def plot():
+    plt.rcParams['figure.dpi'] = 300
+    plt.rcParams['savefig.dpi'] = 300
     for algorithm in sortingAlgos:
         plt.scatter(ctrElements, algoArrDic[algorithm.__name__], label=algorithm.__name__)
     plt.suptitle("Laufzeitvergleich", fontsize=14, fontweight="bold")
-    plt.title(
-        "Anzahl Messungen: " + str(anzPoints - 1) + "   Schrittgröße: " + str(stepSize) + "   MaxRand: " + str(maxRand))
+
+    # Parameter: Wissenschaftliche Schreibweise, wenn 10er Potenz, sonst ausgeschrieben.
+    anzMessungen = "Anzahl Messungen: " + str(anzPoints - 1) + "   "
+    stepSizeStr = "Schrittgröße: " + \
+                  (("10e" + str(int(math.log10(stepSize))) + "   ")
+                   if (math.log10(stepSize) % 1 == 0)
+                   else (str(stepSize) + "   "))
+    maxRandStr = "MaxRand: " + \
+                 (("10e" + str(int(math.log10(maxRand))) + "   ")
+                  if (math.log10(maxRand) % 1 == 0)
+                  else (str(maxRand) + "   "))
+
+    plt.title(anzMessungen + stepSizeStr + maxRandStr)
     plt.xlabel("n")
     plt.ylabel("Laufzeit in ms")
     plt.legend()
+
+    plt.figtext(0.98, 0.02, "Jannis Gehring, Soli Deo Gloria", ha='right', va='bottom', fontsize=9, color='gray')
     plt.show()
 
 
@@ -204,9 +232,9 @@ def plot():
 if __name__ == '__main__':
 
     anzPoints = 20
-    stepSize = 1000
-    maxRand = 1000
-    sortingAlgos = [quickSortChatGPT, mergeSort, bubbleSort]
+    stepSize = 100
+    maxRand = 19000
+    sortingAlgos = [bubbleSort, insertionSort, selectionSort]
     times = []
     ctrElements = [0]
     algoArrDic = {}
