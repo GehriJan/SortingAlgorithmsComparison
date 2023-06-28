@@ -3,11 +3,13 @@
 # Press ⌃R to execute it or replace it with your code.
 # Press Double ⇧ to search everywhere for classes, files, tool windows, actions, and settings.
 import array as arr
+import datetime
 import math
 import time
 import numpy as np
 import matplotlib.pyplot as plt
 import random
+from datetime import datetime
 
 
 # todo zeitmessung einfügen mit tabelle
@@ -225,7 +227,10 @@ def plot():
     plt.legend()
 
     plt.figtext(0.98, 0.02, "Jannis Gehring, Soli Deo Gloria", ha='right', va='bottom', fontsize=9, color='gray')
+    if store:
+        plt.savefig("Laufzeitvergleich" + str(datetime.now().strftime('%Y%m%d%H%M%S')) + ".png")
     plt.show()
+
 
 
 # Press the green button in the gutter to run the script.
@@ -234,7 +239,9 @@ if __name__ == '__main__':
     anzPoints = 20
     stepSize = 100
     maxRand = 19000
+    store = True
     sortingAlgos = [bubbleSort, insertionSort, selectionSort]
+
     times = []
     ctrElements = [0]
     algoArrDic = {}
